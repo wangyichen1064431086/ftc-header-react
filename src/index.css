@@ -1,0 +1,387 @@
+body {
+  background: #fff1e0;
+  margin: 0px;
+  /*body默认margin是8，padding是0*/
+  height: 1000px;
+}
+
+.ftc-header {
+  width: 100%;
+  font-family: Helvetica Neue,Verdana,Arial,Hiragino Sans GB,WenQuanYi Micro Hei,Heiti SC,STHeiti,Microsoft Yahei,SimSun,sans-serif;
+  font-size: 16px;
+}
+
+.ftc-header__container {
+  height: 100%;
+  position: relative;
+}
+
+.ftc-header__row {
+  /*border-bottom: 1px solid oColorsGetColorFor('ftc-header', 'border');*/
+}
+
+.ftc-header--hide {
+  display: none !important;
+}
+
+.ftc-header__top {
+  height: 44px;
+  background-color: #333;
+  color: #fff;
+  padding: 0 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 61.24em) {
+  .ftc-header__top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+}
+
+@media (min-width: 61.25em) {
+  .ftc-header__top {
+    height: 57px;
+    padding: 0px 30px;
+  }
+}
+
+@media (min-width: 76.25em) {
+  .ftc-header__top {
+    height: 57px;
+    padding: 0px 74.5px;
+  }
+}
+
+.ftc-header__top-column {
+  height: 100%;
+}
+
+.ftc-header__top-center {
+  width: 100%;
+}
+
+.ftc-header-hometitle {
+  background-size: 98.7px 21px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(http://s.ftimg.net/img/svg/brand-ftc-masthead-white.svg);
+}
+
+@media (min-width: 61.25em) {
+  .ftc-header-hometitle {
+    background-size: auto 36px;
+    /*背景图片高度为36px，宽度按比例缩放*/
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(http://static.ftchinese.com/images/masthead36.png);
+  }
+}
+
+.ftc-header-tagtitle {
+  background-size: 98.7px 21px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(http://s.ftimg.net/img/svg/brand-ftc-masthead-white.svg);
+  color: transparent;
+}
+
+@media (min-width: 61.25em) {
+  .ftc-header-tagtitle {
+    background: transparent;
+    text-align: center;
+    line-height: 57px;
+    font-size: 32px;
+    color: #fff;
+  }
+}
+
+.ftc-header__top-left {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 120px;
+  text-align: left;
+}
+
+.ftc-header__top-left .ftc-header__lang {
+  display: none;
+  height: 100%;
+  cursor: pointer;
+  position: relative;
+}
+
+@media (min-width: 61.25em) {
+  .ftc-header__top-left .ftc-header__lang {
+    display: block;
+  }
+}
+
+.ftc-header__top-left .ftc-header__lang-list {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  min-width: 100%;
+  margin: 0px;
+  padding: 0 10px;
+  background: #505050;
+}
+
+.ftc-header__top-left .ftc-header__lang-item {
+  list-style-type: none;
+  border-top: 1px dotted #fff;
+}
+
+.ftc-header__top-left .ftc-header__lang-item a {
+  display: inline-block;
+  height: 57px;
+  line-height: 57px;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  color: #fff;
+}
+
+.ftc-header__top-left .ftc-header__lang-item:first-child {
+  border-top: none;
+}
+
+.ftc-header__top-left .ftc-header__lang-item:first-child a:after {
+  content: '';
+  display: inline-block;
+  margin-left: 10px;
+  border-top: 8px solid #fff;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.ftc-header__top-left .ftc-header__lang-listdefault {
+  background: #333;
+}
+
+.ftc-header__top-left .ftc-header__lang-listdefault .ftc-header__lang-item:not(:first-child) {
+  display: none;
+}
+
+.ftc-header__top-left .ftc-header__brand {
+  width: 100%;
+  height: 100%;
+  background-image: url(https://www.ft.com/__origami/service/image/v2/images/raw/http%3A%2F%2Fstatic.ftchinese.com%2Fimages%2Fmasthead36.png?source=ftchinese&width=80&height=57&fit=contain&from=next001);
+  background-size: 80px 17px;
+  background-position: 0px center;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 61.24em) {
+  .ftc-header__top-left .ftc-header__brand {
+    display: none;
+  }
+}
+
+.ftc-header__top-left .ftc-header__hamburg {
+  display: none;
+  width: 44px;
+  height: 44px;
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: 0 center;
+  background-image: url(http://static.ftchinese.com/ftc-icons/svg/white/hamburger-white.svg);
+}
+
+@media (max-width: 61.24em) {
+  .ftc-header__top-left .ftc-header__hamburg {
+    display: block;
+  }
+}
+
+.ftc-header__top-left .ftc-header__close {
+  background-image: url(http://static.ftchinese.com/ftc-icons/svg/white/cross-white.svg);
+}
+
+.ftc-header__top-right {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  text-align: right;
+  /*
+  .ftc-header__sign-visitormenu {
+    @include respondControllSign();
+  }
+  .ftc-header__sign-memebermenu {
+    display:none;
+  }
+  */
+}
+
+.ftc-header__top-right .ftc-header__sign-readermenu {
+  display: none;
+  height: 100%;
+}
+
+@media (min-width: 61.25em) {
+  .ftc-header__top-right .ftc-header__sign-readermenu {
+    display: block;
+  }
+}
+
+.ftc-header__top-right .ftc-header__sign-readermenu a {
+  display: inline-block;
+  height: 100%;
+  line-height: 57px;
+  padding: 0 5px;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+}
+
+.ftc-header__top-right .ftc-header__sign-readermenu a:hover, .ftc-header__top-right .ftc-header__sign-readermenu a:active {
+  text-decoration: underline;
+}
+
+.ftc-header__top-right .ftc-header__sign-visitormenu a:nth-child(2)::before {
+  /*NOTE:before区域是从border内开始，压住了padding-left*/
+  content: " ";
+  position: absolute;
+  width: 2px;
+  height: 14px;
+  top: 50%;
+  left: -3px;
+  margin-top: -7px;
+  background-color: #fff;
+}
+
+.ftc-header__top-right .ftc-header__sign--hide {
+  display: none;
+}
+
+.ftc-header__loginoverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, .7);
+  text-align: center;
+}
+
+.ftc-header__loginoverlay::before {
+  height: 100%;
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.ftc-header__loginoverlay--show {
+  display: block;
+}
+
+.ftc-header__loginoverlay-window {
+  background-color: #fff1e0;
+  display: inline-block;
+  width: 300px;
+  vertical-align: middle;
+  z-index: 20;
+}
+
+.ftc-header__loginoverlay-title {
+  background-color: #918f83;
+  color: #fff;
+  position: relative;
+  height: 52px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 16px;
+  text-align: left;
+}
+
+.ftc-header__loginoverlay-title .ftc-header__loginoverlay-close {
+  position: absolute;
+  display: inline-block;
+  padding: 0;
+  top: 0px;
+  height: 100%;
+  right: 15px;
+  font-size: 43px;
+  /*待整理：纯CSS写出来的关闭x号*/
+  font-family: Arial;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.ftc-header__loginoverlay-form {
+  height: 240px;
+  padding: 25px 0 0 0;
+}
+
+.ftc-header__loginoverlay-item {
+  height: 60px;
+  padding: 15px;
+}
+
+.ftc-header__loginoverlay-item label {
+  display: block;
+  height: 22px;
+  padding-bottom: 7.5px;
+  text-align: left;
+}
+
+.ftc-header__loginoverlay-item input {
+  display: block;
+  box-sizing: border-box;
+  height: 36px;
+  width: 100%;
+  padding: 7px;
+  border: 1px solid #cec6b9;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #faffbd;
+}
+
+.ftc-header__loginoverlay-saveandsub {
+  height: 36px;
+  padding: 7.5px 15px;
+  text-align: left;
+  line-height: 36px;
+}
+
+.ftc-header__loginoverlay-saveandsub .ftc-header__loginoverlay-saveme {
+  margin: 0;
+  padding: 0;
+}
+
+.ftc-header__loginoverlay-saveandsub .ftc-header__loginoverlay-submit {
+  display: inline-block;
+  float: right;
+  height: 100%;
+  padding: 0px;
+  width: 68px;
+  color: #fff;
+  background: #2e6e9e;
+  border: 1px solid #2e6e9e;
+  border-radius: 5px;
+  outline: none;
+  font-size: 16px;
+}
+
+.ftc-header__loginoverlay-bottom {
+  padding: 7.5px 15px;
+}
+
+.ftc-header__loginoverlay-bottom .ftc-header__loginoverlay-bottomline {
+  text-align: left;
+  height: 36px;
+  box-sizing: border-box;
+  border-bottom: 7.5px;
+}
+
+.ftc-header__loginoverlay-bottom .ftc-header__loginoverlay-bottomline a {
+  color: #2e6e9e;
+  text-decoration: none;
+}
