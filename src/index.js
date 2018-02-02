@@ -3,19 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class Sign extends React.Component {
-  showSigninOverlay(e) {
-    /**
-     * @param e TYPE event对象
-     */    
-    e.preventDefault();
-    this.loginOverlay.classList.add('ftc-header__loginoverlay--show');
-  }
-  closeSigninOverlay(e) {
-    this.loginOverlay.classList.remove('ftc-header__loginoverlay--show');
-  }
+
   render() {
     const data = this.props.signData;
-    const hasSigned = this.props.signState;
+    const hasSigned = this.props.hasSignIn;
     let signMenu
     if (hasSigned) {
       signMenu = (
@@ -34,7 +25,7 @@ class Sign extends React.Component {
     } else {
       signMenu = (
         <div className="ftc-header__sign-readermenu ftc-header__sign-visitormenu">
-          <a className="ftc-header__sign-signin" href={data.signIn.url} onClick={this.props.clickSignIn}>
+          <a className="ftc-header__sign-signin" href={data.signIn.url} onClick={(e) => this.props.clickSignIn(e)}>
             {data.signIn.word}
           </a>
           <a href={data.signUp.url}>
@@ -53,49 +44,54 @@ class Sign extends React.Component {
 }
 
 class LoginOverlay extends React.Component {
-  closeSigninOverlay(e) {
-    this.loginOverlay.classList.remove('ftc-header__loginoverlay--show');
-  }
+ 
   render () {
+    const show = this.props.show;
+    let displayClass;
+    if (show) {
+      displayClass = "ftc-header__loginoverlay ftc-header__loginoverlay--show";
+    } else {
+      displayClass = "ftc-header__loginoverlay";
+    }
     return (
-      <div className="ftc-header__loginoverlay" >
+      <div className={displayClass} >
         <div className="ftc-header__loginoverlay-window">
 
           <div className="ftc-header__loginoverlay-title">
             登录
-            <span className="ftc-header__loginoverlay-close" onClick={e => this.closeSigninOverlay(e)}>×</span>
+            <span className="ftc-header__loginoverlay-close" onClick={ this.props.clickToClose}>×</span>
           </div>
 
           <form method="post" className="ftc-header__loginoverlay-form" action="/users/login">
             <div className="ftc-header__loginoverlay-item ftc-header__loginoverlay-username">
-              <label for="ftcLoginUsername">
+              <label htmlFor="ftcLoginUsername">
                   电子邮件/用户名
               </label>
               <input type="text" name="username" id="ftcLoginUsername" />
             </div>
 
             <div className="ftc-header__loginoverlay-item">
-              <label for="ftcLoginPassword">
+              <label htmlFor="ftcLoginPassword">
                 密码
               </label>
               <input type="password" className="ftc-header__loginoverlay-oneline" name="password" id="ftcLoginPassword" />
             </div>
           
             <div className="ftc-header__loginoverlay-saveandsub">
-              <input className="ftc-header__loginoverlay-saveme" type="checkbox" value="1" checked="checked" name="saveme" id="ftcLoginSaveme" />
-              <label for="ftcLoginSaveme">记住我</label>
+              <input className="ftc-header__loginoverlay-saveme" type="checkbox" value="1" defaultChecked="checked" name="saveme" id="ftcLoginSaveme" />
+              <label htmlFor="ftcLoginSaveme">记住我</label>
 
               <input className="ftc-header__loginoverlay-submit" type="submit" value="提交" />
             </div>
           </form>
           
-          <div class="ftc-header__loginoverlay-bottom">
-            <div class="ftc-header__loginoverlay-bottomline">
+          <div className="ftc-header__loginoverlay-bottom">
+            <div className="ftc-header__loginoverlay-bottomline">
               <a href="/users/findpassword">
                 找回密码
               </a>
             </div>
-            <div class="ftc-header__loginoverlay-bottomline">
+            <div className="ftc-header__loginoverlay-bottomline">
               <a href="http://user.ftchinese.com/register">
                 免费注册
               </a>
@@ -115,10 +111,18 @@ class FtcSimpleHeader extends React.Component {
       hasSignIn: userName ? true: false , //表征是否已登录，默认为false
       showLoginOverlay: false
     }
+    this.clickSignIn = this.clickSignIn.bind(this);
+    this.clickToClose = this.clickToClose.bind(this);
   }
-  clickSignIn() {
+  clickSignIn(e) {
+    e.preventDefault();
     this.setState({
       showLoginOverlay:!this.state.showLoginOverlay //点一下show，再点一下hide
+    })
+  }
+  clickToClose() {
+    this.setState({
+      showLoginOverlay:false
     })
   }
   render() {
@@ -138,12 +142,12 @@ class FtcSimpleHeader extends React.Component {
             </div>
 
             <div className="ftc-header__top-column ftc-header__top-right">
-              <Sign signData = {data.sign} signState = {this.state.hasSignIn} clickSignIn = {() => this.clickSignIn()}/>
+              <Sign signData = {data.sign} hasSignIn = {this.state.hasSignIn} clickSignIn = {this.clickSignIn}/>
             </div>
           </div>
         </div>
 
-        <LoginOverlay />
+        <LoginOverlay show = {this.state.showLoginOverlay} clickToClose ={this.clickToClose}/>
       </header>
     );
   }
