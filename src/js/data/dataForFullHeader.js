@@ -15,28 +15,29 @@ const dataForFullHeader = {
 				"url":"https://www.ft.com/"
 			}
 		]
-	},
-	"signIn":{
-		"url":"http://user.ftchinese.com/login",
-		"word":"登录"
-	},
-	"signUp":{
-		"url":"http://user.ftchinese.com/register",
-		"word":"免费注册"
-	},
-	"myFT":{
-		"url":"/users/mystories",
-		"word":"我的FT"
-	},
-	"mySet":{
-		"url":"/users/cp",
-		"word":"设置"
-	},
-	"signOut":{
-		"url":"http://user.ftchinese.com/logout",
-		"word":"登出"
-	},
-  
+  },
+  sign:{
+    "signIn":{
+      "url":"http://user.ftchinese.com/login",
+      "word":"登录"
+    },
+    "signUp":{
+      "url":"http://user.ftchinese.com/register",
+      "word":"免费注册"
+    },
+    "myFT":{
+      "url":"/users/mystories",
+      "word":"我的FT"
+    },
+    "mySet":{
+      "url":"/users/cp",
+      "word":"设置"
+    },
+    "signOut":{
+      "url":"http://user.ftchinese.com/logout",
+      "word":"登出"
+    }
+  },
 	"nav": {
     "indexForSelectedTopChannel": 0,
     "indexForSelectedSubChannel": -1,
