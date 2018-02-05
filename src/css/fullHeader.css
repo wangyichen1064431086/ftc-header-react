@@ -257,12 +257,16 @@
   color: #fff;
 }
 
+.ftc-header__nav {
+  display: block;
+}
+
 .ftc-header__nav a {
   color: #fff;
 }
 
 @media (max-width: 61.24em) {
-  .ftc-header__nav {
+  .ftc-header__nav.ftc-header__nav-mobileclose {
     display: none;
   }
 }
