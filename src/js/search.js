@@ -5,7 +5,7 @@ class Search extends React.Component {
     const data = this.props.searchData;
     const searchClass = this.props.showSearchForm ? "ftc-header__search ftc-header__row" : "ftc-header__search ftc-header__search-default  ftc-header__row";
     return (
-      <div className={searchClass} >
+      <div className={searchClass} data-ftc--sticky>
         <div className="ftc-header__container">
           <form className="ftc-header__search-formregion" action={data.actionUrl}>
             <button className="ftc-header__search-searchbtn"></button>
