@@ -79,14 +79,15 @@ class FtcFullHeader extends React.Component {
       hasSignIn: userName ? true: false , //表征是否已登录，默认为false
       showLoginOverlay: false,
       showAllLangs:false,
-      showMobileNav: false
+      showMobileNav: false,
+      showSearchForm:false
     }
 
     this.clickSignIn = this.clickSignIn.bind(this);
     this.clickToClose = this.clickToClose.bind(this);
     this.clickDefaultLang = this.clickDefaultLang.bind(this);
     this.clickHamburg = this.clickHamburg.bind(this);
-
+    this.clickSearchSwitch = this.clickSearchSwitch.bind(this);
   }
 
   clickSignIn(e) {
@@ -110,6 +111,11 @@ class FtcFullHeader extends React.Component {
   clickHamburg() {
     this.setState((prevState) => ({
       showMobileNav: !prevState.showMobileNav
+    }));
+  }
+  clickSearchSwitch() {
+    this.setState((prevState) => ({
+      showSearchForm: !prevState.showSearchForm
     }));
   }
   render() {
@@ -153,7 +159,7 @@ class FtcFullHeader extends React.Component {
         </div>
 
         <Nav navData = {data.nav} showMobileNav={this.state.showMobileNav} />
-        <Search />
+        <Search searchData = {data.search} showSearchForm = {this.state.showSearchForm} clickSearchSwitch = {this.clickSearchSwitch}/>
         <LoginOverlay show = {this.state.showLoginOverlay} clickToClose ={this.clickToClose}/>
       </header>
     )
