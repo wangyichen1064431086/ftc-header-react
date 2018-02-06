@@ -1,14 +1,16 @@
 import React from 'react';
 
 class Nav extends React.Component {
+
   render() {
     const nav = this.props.navData;
     const topChannels = nav.topChannels;
     let subChannels = [];
+    console.log(this.props.indexForSelectedTopChannel);
 
     const topChannelItems = topChannels.map((topChannel, i) => {
 
-      const topChannelItemClass = topChannel.index === nav.indexForSelectedTopChannel ? "ftc-header__nav-item ftc-header__nav-topitem ftc-header__nav-topitem-selected" : "ftc-header__nav-item ftc-header__nav-topitem";
+      const topChannelItemClass = topChannel.index === this.props.indexForSelectedTopChannel ? "ftc-header__nav-item ftc-header__nav-topitem ftc-header__nav-topitem-selected" : "ftc-header__nav-item ftc-header__nav-topitem";
       const pushdownSubChannels = topChannel.subChannels;
      
       let pushdownSubChannelItems;
@@ -25,12 +27,12 @@ class Nav extends React.Component {
       }
 
 
-      if (topChannel.index === nav.indexForSelectedTopChannel) {  
+      if (topChannel.index === this.props.indexForSelectedTopChannel) {  
         subChannels = topChannel.subChannels;//subChannels存储被选中的topChannel对应的subChannels数据
 
       }
       return (
-        <li className={topChannelItemClass} key={topChannel.index}>
+        <li className={topChannelItemClass} key={topChannel.index} dataindex={topChannel.index}>
           <a href={topChannel.url}>
             {topChannel.name}
           </a>
@@ -44,7 +46,7 @@ class Nav extends React.Component {
     });
     
     const subChannelItems = subChannels.map((subChannel, i) => {
-      const subChannelItemClass = subChannel.index === nav.indexForSelectedSubChannel ? "ftc-header__nav-item ftc-header__nav-subitem ftc-header__nav-subitem-selected" : "ftc-header__nav-item ftc-header__nav-subitem";
+      const subChannelItemClass = subChannel.index === this.props.indexForSelectedSubChannel ? "ftc-header__nav-item ftc-header__nav-subitem ftc-header__nav-subitem-selected" : "ftc-header__nav-item ftc-header__nav-subitem";
       return (
         <li className={subChannelItemClass} key={subChannel.index}>
           <a href={subChannel.url}>
@@ -59,7 +61,7 @@ class Nav extends React.Component {
     const navTopClass = this.props.sticky ? "ftc-header__nav-list ftc-header__nav-toplist ftc-header--sticky" : "ftc-header__nav-list ftc-header__nav-toplist";
     return (
       <nav className={navClass}>
-        <ul ref="topnav" className={navTopClass} data-ftc--sticky >
+        <ul ref="topnav" className={navTopClass} onClick={this.props.clickTopChannel} data-ftc--sticky >
           {topChannelItems}
         </ul>
         <ul className="ftc-header__nav-list ftc-header__nav-sublist">

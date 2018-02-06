@@ -75,8 +75,10 @@ class FtcFullHeader extends React.Component {
   constructor(props) {
     super(props);
     const userName = getCookie('username');
-    
-    
+    const viewportWidth = getViewportWidth();
+    this.isMobile = viewportWidth <= 980;
+    const data = dataForFullHeader;
+
     this.state = {
       hasSignIn: userName ? true: false , //表征是否已登录，默认为false
       showLoginOverlay: false,
@@ -86,13 +88,18 @@ class FtcFullHeader extends React.Component {
 
       scrollTopNow: 0,
       stickyNavTop:false,
-      stickySearch: false
+      stickySearch: false,
+
+      indexForSelectedTopChannel: data.nav.indexForSelectedTopChannel,
+      indexForSelectedSubChannel: data.nav.indexForSelectedSubChannel
     }
     this.clickSignIn = this.clickSignIn.bind(this);
     this.clickToClose = this.clickToClose.bind(this);
     this.clickDefaultLang = this.clickDefaultLang.bind(this);
     this.clickHamburg = this.clickHamburg.bind(this);
     this.clickSearchSwitch = this.clickSearchSwitch.bind(this);
+
+    this.clickTopChannel = this.clickTopChannel.bind(this);
 
     this.stickyWhenScroll = this.stickyWhenScroll.bind(this);
   }
@@ -152,10 +159,9 @@ class FtcFullHeader extends React.Component {
       showSearchForm: !prevState.showSearchForm
     }));
   }
-  getNavData(data) {
-    const viewportWidth = getViewportWidth();
-    const isMobile = viewportWidth <= 980//当isMobile为true的时候，nav的数据要进行改变
 
+  getNavData(data) {
+   
     const navData = data.nav;
 
     const channelArr = data.nav.topChannels;
@@ -177,12 +183,34 @@ class FtcFullHeader extends React.Component {
     }
     const navDataForMobile = Object.assign({},navData,{topChannels:channelArrForMobile});
 
-    return isMobile ? navDataForMobile : navData;
+    return this.isMobile ? navDataForMobile : navData;//当isMobile为true的时候，nav的数据要进行改变
+
   }
+
+  clickTopChannel(e) {
+    if (!this.isMobile) { //只有mobile的nav需要处理
+      return;
+    }
+
+    if (e.target.tagName !== 'A') {
+      return;
+    }
+    
+    e.preventDefault();
+    const toSelectElem = e.target.parentNode;//li的key才是有用的
+   
+    const dataindex = Number(toSelectElem.getAttribute("dataindex"));//这里直接取toSelectElem.dataindex取不到属性。。。待查
+    this.setState({
+      indexForSelectedTopChannel: dataindex//这里不能使用key的原因为： Keys可以作为React的提示，但不会传递给组件。如果您的组件还需要用到和key相同的值，那么请将其明确地以其他名称属性（如id）进行传递：
+
+
+    });
+  }
+
   render() {
     const data = dataForFullHeader;
     let isHome;
-    if (data.nav.indexForSelectedTopChannel === 0 && data.nav.indexForSelectedSubChannel < 0) {
+    if (this.state.indexForSelectedTopChannel === 0 && this.state.indexForSelectedSubChannel < 0) {
       isHome = true;
     } else {
       isHome = false;
@@ -222,7 +250,7 @@ class FtcFullHeader extends React.Component {
           </div>
         </div>
 
-        <Nav ref="nav" navData = {navData}  showMobileNav = {this.state.showMobileNav} sticky={this.state.stickyNavTop} />
+        <Nav ref="nav" navData = {navData} isMobile={this.isMobile} showMobileNav = {this.state.showMobileNav} sticky={this.state.stickyNavTop} indexForSelectedTopChannel ={this.state.indexForSelectedTopChannel} indexForSelectedSubChannel = {this.state.indexForSelectedSubChannel} clickTopChannel = {this.clickTopChannel}/>
         <Search ref="search" searchData = {data.search} showSearchForm = {this.state.showSearchForm} clickSearchSwitch = {this.clickSearchSwitch} sticky={this.state.stickySearch}/>
         <LoginOverlay show = {this.state.showLoginOverlay} clickToClose ={this.clickToClose}/>
       </header>
