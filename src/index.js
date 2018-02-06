@@ -215,6 +215,7 @@ class FtcFullHeader extends React.Component {
     } else {
       isHome = false;
     }
+    //TODO:计算tag title
     let titleClass;
     if (isHome) {
       titleClass = "ftc-header__top-column ftc-header__top-center ftc-header-hometitle";
