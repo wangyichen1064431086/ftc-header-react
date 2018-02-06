@@ -23,8 +23,11 @@ class Nav extends React.Component {
           )
         });
       }
-      if (topChannel.index === nav.indexForSelectedTopChannel) {
+
+
+      if (topChannel.index === nav.indexForSelectedTopChannel) {  
         subChannels = topChannel.subChannels;//subChannels存储被选中的topChannel对应的subChannels数据
+
       }
       return (
         <li className={topChannelItemClass} key={topChannel.index}>

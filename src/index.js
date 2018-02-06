@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 //import './css/simpleHeader.css';
 import './css/fullHeader.css';
 
-import {getCookie, getOffsetTop, getScrollTop} from './js/helpers.js';
+import {getCookie, getOffsetTop, getScrollTop, getViewportWidth} from './js/helpers.js';
 
 import Sign from './js/sign.js';
 import LoginOverlay from './js/loginOverlay';
@@ -76,16 +76,18 @@ class FtcFullHeader extends React.Component {
     super(props);
     const userName = getCookie('username');
     
+    
     this.state = {
       hasSignIn: userName ? true: false , //表征是否已登录，默认为false
       showLoginOverlay: false,
       showAllLangs:false,
       showMobileNav: false,
       showSearchForm:false,
-      scrollTopNow: 0,
-      stickyNavTop:false
-    }
 
+      scrollTopNow: 0,
+      stickyNavTop:false,
+      stickySearch: false
+    }
     this.clickSignIn = this.clickSignIn.bind(this);
     this.clickToClose = this.clickToClose.bind(this);
     this.clickDefaultLang = this.clickDefaultLang.bind(this);
@@ -103,6 +105,8 @@ class FtcFullHeader extends React.Component {
     this.searchOffsetTop = getOffsetTop(search);
 
     window.addEventListener('scroll', this.stickyWhenScroll);
+
+
 
   }
   
@@ -148,7 +152,33 @@ class FtcFullHeader extends React.Component {
       showSearchForm: !prevState.showSearchForm
     }));
   }
-  
+  getNavData(data) {
+    const viewportWidth = getViewportWidth();
+    const isMobile = viewportWidth <= 980//当isMobile为true的时候，nav的数据要进行改变
+
+    const navData = data.nav;
+
+    const channelArr = data.nav.topChannels;
+    const channelArrForMobile = [];
+    for (const item of channelArr) {
+ 
+      const newItem = Object.assign({},item,{url:"",subChannels:[]});
+      if (item.subChannels && item.subChannels.length > 0) {
+        const newSubChannels = item.subChannels.slice();
+        const subChannelForHome = {
+          name: item.name === "首页" ? "FT中文网首页":"频道首页",
+          url: item.url,
+          index: 100
+        }
+        newSubChannels.unshift(subChannelForHome);
+        newItem.subChannels = newSubChannels;
+      }
+      channelArrForMobile.push(newItem);
+    }
+    const navDataForMobile = Object.assign({},navData,{topChannels:channelArrForMobile});
+
+    return isMobile ? navDataForMobile : navData;
+  }
   render() {
     const data = dataForFullHeader;
     let isHome;
@@ -163,6 +193,9 @@ class FtcFullHeader extends React.Component {
     } else {
       titleClass = "ftc-header__top-column ftc-header__top-center ftc-header-tagtitle"
     }
+
+    const navData = this.getNavData(data);
+    
     return (
       // todo:根据nav一级二级值，计算tagTitle的值:{ !isHome ? data.myTitle : tagTitle }
       <header className="ftc-header">
@@ -189,7 +222,7 @@ class FtcFullHeader extends React.Component {
           </div>
         </div>
 
-        <Nav ref="nav" navData = {data.nav} showMobileNav = {this.state.showMobileNav} sticky={this.state.stickyNavTop} />
+        <Nav ref="nav" navData = {navData}  showMobileNav = {this.state.showMobileNav} sticky={this.state.stickyNavTop} />
         <Search ref="search" searchData = {data.search} showSearchForm = {this.state.showSearchForm} clickSearchSwitch = {this.clickSearchSwitch} sticky={this.state.stickySearch}/>
         <LoginOverlay show = {this.state.showLoginOverlay} clickToClose ={this.clickToClose}/>
       </header>

@@ -40,12 +40,16 @@ function getScrollTop() {
    * Element.scrollTop 属性可以获取或设置一个元素的内容垂直滚动的像素数。
   */
 }
-/*
-function stickyWhenScroll(el) {
-  const scrollTop = getScrollTop(el);
-  const offsetTop = getOffsetTop();
-  const isSticky = scrollTop > offsetTop;
-  this.stickyEl.classList.toggle('ftc-header--sticky',isSticky);
+
+function getViewportWidth() {
+  /**
+   * @dest 获得浏览器当前视口的高度
+   */
+  return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  /** NOTE：
+   * window.innerHeight:浏览器窗口的视口（viewport）高度（以像素为单位），就是DOM在浏览器窗口中能看到的那部分的高度。如果存在水平滚动条，则包括它；如果底部是控制台窗口，则去除了控制台窗口的高度
+   */
 }
-*/
-export {getCookie, getOffsetTop, getScrollTop};
+
+
+export {getCookie, getOffsetTop, getScrollTop, getViewportWidth};
