@@ -52,9 +52,11 @@ class Nav extends React.Component {
     });
 
     const navClass = this.props.showMobileNav? "ftc-header__nav":"ftc-header__nav ftc-header__nav-mobileclose";
+
+    const navTopClass = this.props.sticky ? "ftc-header__nav-list ftc-header__nav-toplist ftc-header--sticky" : "ftc-header__nav-list ftc-header__nav-toplist";
     return (
       <nav className={navClass}>
-        <ul className="ftc-header__nav-list ftc-header__nav-toplist" data-ftc--sticky>
+        <ul ref="topnav" className={navTopClass} data-ftc--sticky >
           {topChannelItems}
         </ul>
         <ul className="ftc-header__nav-list ftc-header__nav-sublist">

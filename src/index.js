@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 //import './css/simpleHeader.css';
 import './css/fullHeader.css';
 
-import {getCookie} from './js/helpers.js';
+import {getCookie, getOffsetTop, getScrollTop} from './js/helpers.js';
 
 import Sign from './js/sign.js';
 import LoginOverlay from './js/loginOverlay';
@@ -75,12 +75,15 @@ class FtcFullHeader extends React.Component {
   constructor(props) {
     super(props);
     const userName = getCookie('username');
+    
     this.state = {
       hasSignIn: userName ? true: false , //表征是否已登录，默认为false
       showLoginOverlay: false,
       showAllLangs:false,
       showMobileNav: false,
-      showSearchForm:false
+      showSearchForm:false,
+      scrollTopNow: 0,
+      stickyNavTop:false
     }
 
     this.clickSignIn = this.clickSignIn.bind(this);
@@ -88,7 +91,34 @@ class FtcFullHeader extends React.Component {
     this.clickDefaultLang = this.clickDefaultLang.bind(this);
     this.clickHamburg = this.clickHamburg.bind(this);
     this.clickSearchSwitch = this.clickSearchSwitch.bind(this);
+
+    this.stickyWhenScroll = this.stickyWhenScroll.bind(this);
   }
+
+  componentDidMount() {
+    const navTop = this.refs.nav.refs.topnav;//为什么这里就不需要findDOMNode?
+    this.navTopOffsetTop = getOffsetTop(navTop);
+
+    const search = ReactDOM.findDOMNode(this.refs.search);//NOTE:this.refs.search是一个对象，而调用ReactDOM.findDOMNode之后才能得到node
+    this.searchOffsetTop = getOffsetTop(search);
+
+    window.addEventListener('scroll', this.stickyWhenScroll);
+
+  }
+  
+  
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.stickyWhenScroll);
+  }
+
+  stickyWhenScroll() {
+    this.setState((prevState) => ({
+      scrollTopNow: getScrollTop(),
+      stickyNavTop: prevState.scrollTopNow > this.navTopOffsetTop,
+      stickySearch: prevState.scrollTopNow > this.searchOffsetTop
+    }));
+  }
+ 
 
   clickSignIn(e) {
     e.preventDefault();
@@ -118,6 +148,7 @@ class FtcFullHeader extends React.Component {
       showSearchForm: !prevState.showSearchForm
     }));
   }
+  
   render() {
     const data = dataForFullHeader;
     let isHome;
@@ -158,8 +189,8 @@ class FtcFullHeader extends React.Component {
           </div>
         </div>
 
-        <Nav navData = {data.nav} showMobileNav={this.state.showMobileNav} />
-        <Search searchData = {data.search} showSearchForm = {this.state.showSearchForm} clickSearchSwitch = {this.clickSearchSwitch}/>
+        <Nav ref="nav" navData = {data.nav} showMobileNav = {this.state.showMobileNav} sticky={this.state.stickyNavTop} />
+        <Search ref="search" searchData = {data.search} showSearchForm = {this.state.showSearchForm} clickSearchSwitch = {this.clickSearchSwitch} sticky={this.state.stickySearch}/>
         <LoginOverlay show = {this.state.showLoginOverlay} clickToClose ={this.clickToClose}/>
       </header>
     )

@@ -9,7 +9,7 @@ function getCookie(name) {
   return decodeURIComponent(document.cookie.substring(len,end));
 }
 
-function getOffsetTop(el) { /**待写入 ftc-utils */
+function getOffsetTop(el) { 
   /**
    * @dest 获得el元素在距页面顶部的距离。即得到this.offsetTop。对应NEXT中main.js的findTop函数.
    * @param el:想要在滚动时粘住的元素
@@ -17,14 +17,14 @@ function getOffsetTop(el) { /**待写入 ftc-utils */
   
   let curTop = el.offsetTop;
   while (el && el.offsetParent) { 
-    //NOTE:HTMLElement.offsetParent 是一个只读属性，返回一个指向最近的（closest，指包含层级上的最近）包含该元素的定位元素。对于fixed元素来说，其offsetParent是null而非fixed定位的那个视口,所以offsetTop要先执行一次
+    //NOTE:HTMLElement.offsetParent 是一个只读属性，返回一个指向最近的（closest，指包含层级上的最近）包含该元素的定位元素。对于fixed元素来说，其offsetParent是null而非fixed定位的那个视口,而fixed元素的offsetTop是相对于视口的那个值。所以offsetTop要先执行一次。
     el = el.offsetParent;
     curTop += el.offsetTop;//NOTE:HTMLElement.offsetTop 为只读属性，它
   }
   return curTop;
 }
 
-function getScrollTop() { /**待写入ftc-utils */
+function getScrollTop() {
   /**
    * @dest 获得光标现在滚动到的位置距页面顶部的距离。
    */
@@ -40,11 +40,12 @@ function getScrollTop() { /**待写入ftc-utils */
    * Element.scrollTop 属性可以获取或设置一个元素的内容垂直滚动的像素数。
   */
 }
-
+/*
 function stickyWhenScroll(el) {
   const scrollTop = getScrollTop(el);
-  const offsetTop = getOffsetTop(el);
-  const isSticky = scrollTop > offsetTop ? true : false;
+  const offsetTop = getOffsetTop();
+  const isSticky = scrollTop > offsetTop;
   this.stickyEl.classList.toggle('ftc-header--sticky',isSticky);
 }
-export {getCookie};
+*/
+export {getCookie, getOffsetTop, getScrollTop};
