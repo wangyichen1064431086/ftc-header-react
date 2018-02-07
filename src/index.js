@@ -78,7 +78,10 @@ class FtcFullHeader extends React.Component {
     const viewportWidth = getViewportWidth();
     this.isMobile = viewportWidth <= 980;
     const data = dataForFullHeader;
-
+    const indexForSelectedTopChannel = data.nav.indexForSelectedTopChannel;//初始值
+    const indexForSelectedSubChannel = data.nav.indexForSelectedSubChannel;//初始值
+    const isHome = indexForSelectedTopChannel === 0 && indexForSelectedSubChannel < 0;
+    const myTitle = data.myTitle || '';
     this.state = {
       hasSignIn: userName ? true: false , //表征是否已登录，默认为false
       showLoginOverlay: false,
@@ -86,13 +89,16 @@ class FtcFullHeader extends React.Component {
       showMobileNav: false,
       showSearchForm:false,
 
-      scrollTopNow: 0,
       stickyNavTop:false,
       stickySearch: false,
 
-      indexForSelectedTopChannel: data.nav.indexForSelectedTopChannel,
-      indexForSelectedSubChannel: data.nav.indexForSelectedSubChannel
+      indexForSelectedTopChannel: indexForSelectedTopChannel,
+      indexForSelectedSubChannel: indexForSelectedSubChannel,
+      isHome: isHome,
+      titleText: isHome ? '':myTitle,
+      titleClass: isHome ? "ftc-header-hometitle":"ftc-header-tagtitle"
     }
+  
     this.clickSignIn = this.clickSignIn.bind(this);
     this.clickToClose = this.clickToClose.bind(this);
     this.clickDefaultLang = this.clickDefaultLang.bind(this);
@@ -123,10 +129,10 @@ class FtcFullHeader extends React.Component {
   }
 
   stickyWhenScroll() {
+    const scrollTopNow = getScrollTop();
     this.setState((prevState) => ({
-      scrollTopNow: getScrollTop(),
-      stickyNavTop: prevState.scrollTopNow > this.navTopOffsetTop,
-      stickySearch: prevState.scrollTopNow > this.searchOffsetTop
+      stickyNavTop: scrollTopNow > this.navTopOffsetTop,
+      stickySearch: scrollTopNow > this.searchOffsetTop
     }));
   }
  
@@ -191,7 +197,7 @@ class FtcFullHeader extends React.Component {
     if (!this.isMobile) { //只有mobile的nav需要处理
       return;
     }
-
+    
     if (e.target.tagName !== 'A') {
       return;
     }
@@ -200,43 +206,33 @@ class FtcFullHeader extends React.Component {
     const toSelectElem = e.target.parentNode;//li的key才是有用的
    
     const dataindex = Number(toSelectElem.getAttribute("dataindex"));//这里直接取toSelectElem.dataindex取不到属性。。。待查
+    const newTitle = toSelectElem.getAttribute("dataname");
+    const isHome = dataindex === 0;
     this.setState({
-      indexForSelectedTopChannel: dataindex//这里不能使用key的原因为： Keys可以作为React的提示，但不会传递给组件。如果您的组件还需要用到和key相同的值，那么请将其明确地以其他名称属性（如id）进行传递：
-
-
+      isHome: isHome,
+      indexForSelectedTopChannel: dataindex,//这里不能使用key的原因为： Keys可以作为React的提示，但不会传递给组件。如果您的组件还需要用到和key相同的值，那么请将其明确地以其他名称属性（如id）进行传递：
+      titleText:newTitle,
+      titleClass: isHome ? "ftc-header-hometitle":"ftc-header-tagtitle"
     });
   }
 
   render() {
     const data = dataForFullHeader;
-    let isHome;
-    if (this.state.indexForSelectedTopChannel === 0 && this.state.indexForSelectedSubChannel < 0) {
-      isHome = true;
-    } else {
-      isHome = false;
-    }
-    //TODO:计算tag title
-    let titleClass;
-    if (isHome) {
-      titleClass = "ftc-header__top-column ftc-header__top-center ftc-header-hometitle";
-    } else {
-      titleClass = "ftc-header__top-column ftc-header__top-center ftc-header-tagtitle"
-    }
-
     const navData = this.getNavData(data);
     
     return (
-      // todo:根据nav一级二级值，计算tagTitle的值:{ !isHome ? data.myTitle : tagTitle }
+      
       <header className="ftc-header">
         <div className="ftc-header__top ">
 		      <div className="ftc-header__container">
 
-            <div className = {titleClass}>
-              { !isHome ? data.myTitle : '' }
+            <div className = {`ftc-header__top-column ftc-header__top-center ${this.state.titleClass}`}>
+              {/*{ !isHome ? data.myTitle : '' }*/}
+              {this.state.titleText}
             </div>
-
+   
             <div className="ftc-header__top-column ftc-header__top-left">
-              { isHome ? 
+              { this.state.isHome ? 
                 <Lang lang={data.lang} showAll={this.state.showAllLangs} clickDefault={this.clickDefaultLang}/> :
                 (<div className="ftc-header__brand">
                 </div>
@@ -252,8 +248,12 @@ class FtcFullHeader extends React.Component {
         </div>
 
         <Nav ref="nav" navData = {navData} isMobile={this.isMobile} showMobileNav = {this.state.showMobileNav} sticky={this.state.stickyNavTop} indexForSelectedTopChannel ={this.state.indexForSelectedTopChannel} indexForSelectedSubChannel = {this.state.indexForSelectedSubChannel} clickTopChannel = {this.clickTopChannel}/>
+
         <Search ref="search" searchData = {data.search} showSearchForm = {this.state.showSearchForm} clickSearchSwitch = {this.clickSearchSwitch} sticky={this.state.stickySearch}/>
+
         <LoginOverlay show = {this.state.showLoginOverlay} clickToClose ={this.clickToClose}/>
+
+        {/*<div dangerouslySetInnerHTML={{__html:'cc &copy; 2015'}} />*/}
       </header>
     )
   }

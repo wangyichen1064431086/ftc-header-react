@@ -6,7 +6,6 @@ class Nav extends React.Component {
     const nav = this.props.navData;
     const topChannels = nav.topChannels;
     let subChannels = [];
-    console.log(this.props.indexForSelectedTopChannel);
 
     const topChannelItems = topChannels.map((topChannel, i) => {
 
@@ -32,7 +31,7 @@ class Nav extends React.Component {
 
       }
       return (
-        <li className={topChannelItemClass} key={topChannel.index} dataindex={topChannel.index}>
+        <li className={topChannelItemClass} key={topChannel.index} dataindex={topChannel.index} dataname={topChannel.name}>
           <a href={topChannel.url}>
             {topChannel.name}
           </a>
@@ -60,7 +59,7 @@ class Nav extends React.Component {
 
     const navTopClass = this.props.sticky ? "ftc-header__nav-list ftc-header__nav-toplist ftc-header--sticky" : "ftc-header__nav-list ftc-header__nav-toplist";
     return (
-      <nav className={navClass}>
+      <nav className={navClass} aria-label="Main navigation">
         <ul ref="topnav" className={navTopClass} onClick={this.props.clickTopChannel} data-ftc--sticky >
           {topChannelItems}
         </ul>
