@@ -111,7 +111,7 @@ class FtcFullHeader extends React.Component {
   }
 
   componentDidMount() {
-    const navTop = this.refs.nav.refs.topnav;//为什么这里就不需要findDOMNode?
+    const navTop = this.refs.nav.refs.topnav;//为什么这里就不需要findDOMNode? NOTE：findDOMNode(ReactComponent component) 是返回该React组件实例——component相应的DOM节点。而此处因为该React组件就是DOM元素，所以直接取React组件就行。
     this.navTopOffsetTop = getOffsetTop(navTop);
 
     const search = ReactDOM.findDOMNode(this.refs.search);//NOTE:this.refs.search是一个对象，而调用ReactDOM.findDOMNode之后才能得到node

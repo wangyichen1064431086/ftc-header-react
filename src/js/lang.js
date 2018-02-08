@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Lang extends React.Component {
 
@@ -22,6 +23,14 @@ class Lang extends React.Component {
         </ul>
       </div>
     )
+  }
+
+ 
+  static propTypes = {
+    lang: PropTypes.object.isRequired,
+    showAll: PropTypes.bool.isRequired,
+    clickDefault:PropTypes.func.isRequired
+
   }
 }
 

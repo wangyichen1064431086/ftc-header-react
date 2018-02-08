@@ -7,7 +7,6 @@ class Sign extends React.Component {
     //const data = this.props.signData;
     //const hasSigned = this.props.hasSignIn;
     const data = signData;
-    console.log(data);
     let signMenu
     if (hasSigned) {
       signMenu = (
