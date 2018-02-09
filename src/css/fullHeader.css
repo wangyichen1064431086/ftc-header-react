@@ -295,6 +295,9 @@
 
 .ftc-header__nav-toplist {
   height: 44px;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: nowrap;
 }
 
 @media (max-width: 61.24em) {

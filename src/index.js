@@ -99,7 +99,7 @@ class FtcFullHeader extends React.Component {
       titleClass: isHome ? "ftc-header-hometitle":"ftc-header-tagtitle"
     }
   
-    this.clickSignIn = this.clickSignIn.bind(this);
+    //this.clickSignIn = this.clickSignIn.bind(this);
     this.clickToClose = this.clickToClose.bind(this);
     this.clickDefaultLang = this.clickDefaultLang.bind(this);
     this.clickHamburg = this.clickHamburg.bind(this);
@@ -125,7 +125,7 @@ class FtcFullHeader extends React.Component {
   
   
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.stickyWhenScroll);
+    window.removeEventListener('scroll', this.stickyWhenScroll);//在React中使用原生DOM事件时，一定要在组件卸载时手动移除,否则可能发生内存泄漏。
   }
 
   stickyWhenScroll() {
@@ -242,7 +242,11 @@ class FtcFullHeader extends React.Component {
             </div>
 
             <div className="ftc-header__top-column ftc-header__top-right">
-              <Sign signData = {data.sign} hasSignIn = {this.state.hasSignIn} clickSignIn = {this.clickSignIn}/>
+              <Sign signData = {data.sign} hasSignIn = {this.state.hasSignIn} clickSignIn = {(e)=>this.clickSignIn(e)}/> 
+              {/*使用箭头函数绑定事件，不用再bind了
+              这里clickSignIn = {(e)=>this.clickSignIn(e)}等价于：
+              clickSignIn = {this.clickSignIn.bind(this)}
+              */}
             </div>
           </div>
         </div>
